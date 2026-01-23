@@ -1,0 +1,13 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% for q in quest %}
+        <p>{{q.ID}}</p>
+        <p>{{q.QName}}</p>
+        <p>{{q.CorrectA}}</p>
+        <p>{{q.DecoyB}}</p>
+        <p>{{q.DecoyC}}</p>
+        <p>{{q.DecoyD}}</p>
+        {% endfor %}
+</body>

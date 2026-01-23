@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Time</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS to make it look nice and clean */
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .quiz-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options-list li {
+            margin-bottom: 10px;
+        }
+        /* Style the labels to look like clickable buttons */
+        .option-label {
+            display: block;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .option-label:hover {
+            background-color: #e9ecef;
+        }
+        /* Highlight selected option */
+        input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <h1 style="text-align: center;">Daily Quiz</h1>
+
+    <form action="/submit-quiz" method="POST">
+        
+        {% for q in questions %}
+        <div class="quiz-card">
+            <div class="question-text">
+                {{ loop.index }}. {{ q.QName }}
+            </div>
+
+            <ul class="options-list">
+                <li>
+                    <label class="option-label">
+                        <input type="radio" name="{{ q.ID }}" value="{{ q.ChoiceA }}" required>
+                        <span>{{ q.ChoiceA }}</span>
+                    </label>
+                </li>
+                
+                <li>
+                    <label class="option-label">
+                        <input type="radio" name="{{ q.ID }}" value="{{ q.ChoiceB }}">
+                        <span>{{ q.ChoiceB }}</span>
+                    </label>
+                </li>
+
+                <li>
+                    <label class="option-label">
+                        <input type="radio" name="{{ q.ID }}" value="{{ q.ChoiceC }}">
+                        <span>{{ q.ChoiceC }}</span>
+                    </label>
+                </li>
+
+                <li>
+                    <label class="option-label">
+                        <input type="radio" name="{{ q.ID }}" value="{{ q.ChoiceD }}">
+                        <span>{{ q.ChoiceD }}</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="submit-btn">Submit Answers</button>
+    </form>
+
+</body>
+</html>

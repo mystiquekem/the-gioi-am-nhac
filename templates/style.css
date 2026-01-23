@@ -1,0 +1,23 @@
+.element1 {
+  background-color: rgba(128, 128, 128, 0.8);
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  height: 200px;
+  width: auto;
+  font-size : 32px;
+}
+.element2 {
+  background-color: rgba(200, 200, 200, 0.6);
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  height: 200px;
+  width: auto;
+  font-size : 18px;
+}
+.placeholder {
+  background-color: rgba(128, 128, 128, 0.4);
+}

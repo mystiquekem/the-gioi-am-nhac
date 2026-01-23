@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto;}
+        .correct { color: green; font-weight: bold; }
+        .incorrect { color: red; font-weight: bold; }
+        .summary-card { border-bottom: 1px solid #ddd; padding: 10px 0; }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <h1>Quiz Complete!</h1>
+    <h2>Your Score: {{ score }} / {{ total }}</h2>
+    
+    <hr>
+    
+    {% for item in summary %}
+    <div class="summary-card">
+        <p><strong>Question:</strong> {{ item.question }}</p>
+        <p>Your Answer: 
+            <span class="{{ 'correct' if item.is_correct else 'incorrect' }}">
+                {{ item.your_answer }}
+            </span>
+        </p>
+        {% if not item.is_correct %}
+            <p style="color: grey;">Correct Answer: {{ item.correct_answer }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <br>
+    <a href="/quiz/question">Try Again</a>
+</body>
+</html>

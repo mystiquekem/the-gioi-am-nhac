@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    {% include '3d_model_viewer/sidebar.html' %}
+    <p>CHAO MUNG DEN VOI THE GIOI AM NHAC</p>
+    <a href="/music_world/3dpreview/guzheng-1k">GUZHENG1</a>
+    <br>
+    <a href="/music_world/3dpreview/guzheng-2k">GUZHENG2</a>
+    <br>
+    <a href="/music_world/3dpreview/monochord">MONOCHORD</a>
+    
+    <script>
+    function toggleNav() {
+        const sidebar = document.getElementById('mySidebar');
+        if (sidebar.style.width === '250px') {
+            sidebar.style.width = '0';
+        } else {
+            sidebar.style.width = '250px';
+        }
+    }
+    
+    function loadModel(modelName) {
+        // Navigate to the 3D model page
+        const path = '/music_world/3dpreview/' + modelName.replace('.glb', '');
+        window.location.href = path;
+    }
+    </script>
+</body>
