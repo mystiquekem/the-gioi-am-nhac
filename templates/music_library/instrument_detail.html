@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ instrument.Vietnamese_Name }} - Music Library</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .detail-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .header-section {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .instrument-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #0f766e;
+            margin-bottom: 5px;
+        }
+        
+        .instrument-subtitle {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .badge {
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .badge-category {
+            background: #e0f2f1;
+            color: #0d9488;
+        }
+        
+        .badge-region {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .main-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .audio-section {
+            background: #f0fdfa;
+            border: 2px solid #99f6e4;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .audio-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f766e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .play-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .play-button:active {
+            transform: scale(0.95);
+        }
+        
+        .audio-controls {
+            flex: 1;
+        }
+        
+        .video-section {
+            margin: 30px 0;
+        }
+        
+        .video-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f766e;
+            margin-bottom: 15px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .content-section {
+            margin: 30px 0;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #0f766e;
+            margin-bottom: 15px;
+            border-left: 4px solid #2dd4bf;
+            padding-left: 15px;
+        }
+        
+        .section-content {
+            color: #374151;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #0d9488;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0f766e;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    
+    <div class="detail-container">
+        <div class="header-section">
+            <div class="instrument-title">{{ instrument.Vietnamese_Name }}</div>
+            <div class="instrument-subtitle">{{ instrument.Name }}</div>
+            
+            <div class="badges">
+                {% if instrument.Category %}
+                    <span class="badge badge-category">{{ instrument.Category }}</span>
+                {% endif %}
+                {% if instrument.Region %}
+                    <span class="badge badge-region">{{ instrument.Region }}</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if instrument.Image_Main %}
+        <img src="{{ instrument.Image_Main }}" alt="{{ instrument.Vietnamese_Name }}" class="main-image">
+        {% endif %}
+        
+        {% if instrument.Audio_File %}
+        <div class="audio-section">
+            <div class="audio-title">
+                🔊 Listen to the sound
+            </div>
+            <div class="audio-player">
+                <button class="play-button" id="playButton" onclick="toggleAudio()">
+                    <span id="playIcon">▶️</span>
+                </button>
+                <div class="audio-controls">
+                    <audio id="audioPlayer" style="width: 100%;" controls>
+                        <source src="{{ instrument.Audio_File }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if instrument.Video_URL %}
+        <div class="video-section">
+            <div class="video-title">🎥 Watch how it's played</div>
+            <div class="video-container">
+                <iframe 
+                    src="{{ instrument.Video_URL | replace('watch?v=', 'embed/') | replace('youtu.be/', 'youtube.com/embed/') }}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if instrument.Description %}
+        <div class="content-section">
+            <div class="section-title">Description</div>
+            <div class="section-content">{{ instrument.Description }}</div>
+        </div>
+        {% endif %}
+        
+        {% if instrument.History %}
+        <div class="content-section">
+            <div class="section-title">History & Origin</div>
+            <div class="section-content">{{ instrument.History }}</div>
+        </div>
+        {% endif %}
+        
+        {% if instrument.Playing_Technique %}
+        <div class="content-section">
+            <div class="section-title">Playing Technique</div>
+            <div class="section-content">{{ instrument.Playing_Technique }}</div>
+        </div>
+        {% endif %}
+        
+        <div class="action-buttons">
+            <a href="/library/" class="btn btn-secondary">← Back to Library</a>
+            <a href="/library/edit/{{ instrument.ID }}" class="btn btn-primary">✏️ Edit</a>
+            <form action="/library/delete/{{ instrument.ID }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this instrument?');">
+                <button type="submit" class="btn btn-danger">🗑️ Delete</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playButton = document.getElementById('playButton');
+        const playIcon = document.getElementById('playIcon');
+        
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.textContent = '⏸️';
+            } else {
+                audio.pause();
+                playIcon.textContent = '▶️';
+            }
+        }
+        
+        // Update button when audio state changes
+        audio.addEventListener('play', () => {
+            playIcon.textContent = '⏸️';
+        });
+        
+        audio.addEventListener('pause', () => {
+            playIcon.textContent = '▶️';
+        });
+        
+        audio.addEventListener('ended', () => {
+            playIcon.textContent = '▶️';
+        });
+    </script>
+</body>
+</html>

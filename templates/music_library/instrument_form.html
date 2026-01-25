@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if action == 'add' %}Add New{% else %}Edit{% endif %} Instrument</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f766e;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-label.required::after {
+            content: " *";
+            color: #ef4444;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #2dd4bf;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #0d9488;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0f766e;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    
+    <div class="form-container">
+        <h1 class="form-title">
+            {% if action == 'add' %}➕ Add New Instrument{% else %}✏️ Edit Instrument{% endif %}
+        </h1>
+        
+        <form method="POST" action="{% if action == 'add' %}/library/add{% else %}/library/edit/{{ instrument.ID }}{% endif %}">
+            <div class="form-group">
+                <label class="form-label required" for="ID">Instrument ID</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    id="ID" 
+                    name="ID" 
+                    value="{% if instrument %}{{ instrument.ID }}{% endif %}"
+                    {% if action == 'edit' %}readonly{% endif %}
+                    required
+                >
+                <div class="form-hint">Unique identifier (e.g., dan-bau, dan-tranh)</div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label required" for="Vietnamese_Name">Vietnamese Name</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="Vietnamese_Name" 
+                        name="Vietnamese_Name" 
+                        value="{% if instrument %}{{ instrument.Vietnamese_Name }}{% endif %}"
+                        placeholder="e.g., Đàn bầu"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required" for="Name">English Name</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="Name" 
+                        name="Name" 
+                        value="{% if instrument %}{{ instrument.Name }}{% endif %}"
+                        placeholder="e.g., Monochord"
+                        required
+                    >
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="Category">Category</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="Category" 
+                        name="Category" 
+                        value="{% if instrument %}{{ instrument.Category }}{% endif %}"
+                        placeholder="e.g., String, Wind, Percussion"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="Region">Region</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="Region" 
+                        name="Region" 
+                        value="{% if instrument %}{{ instrument.Region }}{% endif %}"
+                        placeholder="e.g., Northern Vietnam, Huế"
+                    >
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="Description">Description</label>
+                <textarea 
+                    class="form-textarea" 
+                    id="Description" 
+                    name="Description"
+                    placeholder="Brief description of the instrument..."
+                >{% if instrument %}{{ instrument.Description }}{% endif %}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="History">History & Origin</label>
+                <textarea 
+                    class="form-textarea" 
+                    id="History" 
+                    name="History"
+                    placeholder="Historical background and cultural significance..."
+                >{% if instrument %}{{ instrument.History }}{% endif %}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="Playing_Technique">Playing Technique</label>
+                <textarea 
+                    class="form-textarea" 
+                    id="Playing_Technique" 
+                    name="Playing_Technique"
+                    placeholder="How to play the instrument..."
+                >{% if instrument %}{{ instrument.Playing_Technique }}{% endif %}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="Audio_File">Audio File URL</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    id="Audio_File" 
+                    name="Audio_File" 
+                    value="{% if instrument %}{{ instrument.Audio_File }}{% endif %}"
+                    placeholder="/static/audio/dan-bau.mp3"
+                >
+                <div class="form-hint">Path to audio file or URL</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="Video_URL">Video URL (YouTube)</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    id="Video_URL" 
+                    name="Video_URL" 
+                    value="{% if instrument %}{{ instrument.Video_URL }}{% endif %}"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                >
+                <div class="form-hint">YouTube video URL showing how to play the instrument</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="Image_Main">Main Image URL</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    id="Image_Main" 
+                    name="Image_Main" 
+                    value="{% if instrument %}{{ instrument.Image_Main }}{% endif %}"
+                    placeholder="/static/images/dan-bau.jpg"
+                >
+                <div class="form-hint">Path to main image file or URL</div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="Image_Gallery">Image Gallery (JSON)</label>
+                <textarea 
+                    class="form-textarea" 
+                    id="Image_Gallery" 
+                    name="Image_Gallery"
+                    placeholder='["image1.jpg", "image2.jpg"]'
+                    style="min-height: 80px;"
+                >{% if instrument %}{{ instrument.Image_Gallery }}{% endif %}</textarea>
+                <div class="form-hint">JSON array of additional image URLs</div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    {% if action == 'add' %}➕ Add Instrument{% else %}💾 Save Changes{% endif %}
+                </button>
+                <a href="{% if action == 'add' %}/library/{% else %}/library/instrument/{{ instrument.ID }}{% endif %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
